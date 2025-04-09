@@ -15,7 +15,7 @@ Compile with the following script
 ./compile.sh
 ```
 
-(VSCode) -> Launch Debbuger with the Pico Debugger Launcher 
+(VSCode) -> Launch Debbuger with the Pico Debugger (Cortex-Debug) Launcher 
 
 
 # Main dirs
