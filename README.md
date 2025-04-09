@@ -16,3 +16,20 @@ Compile with the following script
 ```
 
 (VSCode) -> Launch Debbuger with the Pico Debugger Launcher 
+
+
+# Main dirs
+
+Secure World Code
+
+```
+secure/*
+
+```
+
+NonSecure World Code
+
+```
+nonsecure/*
+
+```
