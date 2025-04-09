@@ -1,3 +1,0 @@
-/home/ajoianeto/Workspace/TrustzonePico2_template/picotool/picotool-subbuild/CMakeFiles/picotool-populate.dir
-/home/ajoianeto/Workspace/TrustzonePico2_template/picotool/picotool-subbuild/CMakeFiles/edit_cache.dir
-/home/ajoianeto/Workspace/TrustzonePico2_template/picotool/picotool-subbuild/CMakeFiles/rebuild_cache.dir

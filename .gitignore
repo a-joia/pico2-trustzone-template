@@ -1,0 +1,8 @@
+build
+picotool
+build_secure
+build_nonsecure
+
+build_secure/*
+build_nonsecure/*
+picotool/*
