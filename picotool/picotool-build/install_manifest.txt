@@ -1,0 +1,5 @@
+/home/ajoianeto/Workspace/TrustzonePico2_template/picotool/picotool/picotool
+/home/ajoianeto/Workspace/TrustzonePico2_template/picotool/picotool/picotoolTargets.cmake
+/home/ajoianeto/Workspace/TrustzonePico2_template/picotool/picotool/picotoolTargets-release.cmake
+/home/ajoianeto/Workspace/TrustzonePico2_template/picotool/picotool/picotoolConfig.cmake
+/home/ajoianeto/Workspace/TrustzonePico2_template/picotool/picotool/picotoolConfigVersion.cmake
