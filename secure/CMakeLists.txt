@@ -78,6 +78,7 @@ add_executable(secure ${SECURE_SOURCES} )
 
 # Include folder
 target_include_directories(secure PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include)
+target_include_directories(secure PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/../nsc)
 target_include_directories(secure PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/../pico-sdk/include)
 target_include_directories(secure PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/../drivers/rp2_common/hardware_sync/include)
 target_include_directories(secure PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/../drivers/rp2_common/hardware_sync_spin_lock/include)

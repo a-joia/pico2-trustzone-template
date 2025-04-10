@@ -1,3 +1,7 @@
+#include "nsc.h"
+#include <stdio.h>
+#include "pico/stdlib.h"
+
 #define NSC_ENTRY __attribute__((cmse_nonsecure_entry))
 #define NSC_CALL __attribute__((cmse_nonsecure_call))
 #define NSC_WEAK __attribute__((weak, cmse_nonsecure_entry))
@@ -10,8 +14,7 @@
 
 
 
-int a=0;
 NSC_ENTRY void Secure_Test_Call(void){
-    a++;
+    printf("Hello from NSC secure world\n");
     return;
 }

@@ -49,9 +49,18 @@ int main_loop(void){
   
 }
 
+
+void config_uart_std_to_be_accessible_by_ns(){
+  
+}
+
 /* Secure main() */
 int main(void) {
+
   stdio_init_all();
+  config_uart_std_to_be_accessible_by_ns();
+  printf("Hello from secure world\n");
+
   sc_trustzone_init();
 
   funcptr_void NonSecure_ResetHandler;
