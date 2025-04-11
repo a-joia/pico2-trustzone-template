@@ -4,9 +4,12 @@
 #include "nsc.h"
 
 int main(){
+        stdio_init_all();
         while(1){
-                // printf("Hello from non-secure world\n");
                 Secure_Test_Call();
-                sleep_ms(3000);
+           
+                // sleep_ms(10);
+           
+                printf("Hello from non-secure world\n");
         }
 }

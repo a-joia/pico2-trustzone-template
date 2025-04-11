@@ -16,5 +16,6 @@
 
 NSC_ENTRY void Secure_Test_Call(void){
     printf("Hello from NSC secure world\n");
+    // sleep_ms(10);
     return;
 }

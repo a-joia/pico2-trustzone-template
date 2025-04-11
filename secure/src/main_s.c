@@ -39,27 +39,28 @@
  
 /* typedef for non-secure callback functions */
 typedef void (*funcptr_void) (void) __attribute__((cmse_nonsecure_call));
- 
-int main_loop(void){
-  while (1)
-  {
-    /* code */
-  printf("Hello from secure world\n");
-  }
-  
-}
 
 
-void config_uart_std_to_be_accessible_by_ns(){
-  
-}
+void config_peripherals_be_accessible_by_ns(){
+  accessctrl_hw->uart[0] = ACCESSCTRL_PASSWORD_BITS | 0xFF; 
+  accessctrl_hw->uart[1] = ACCESSCTRL_PASSWORD_BITS | 0xFF; 
+  accessctrl_hw->timer[0] = ACCESSCTRL_PASSWORD_BITS | 0xFF;
+  accessctrl_hw->timer[1] = ACCESSCTRL_PASSWORD_BITS | 0xFF; 
+  accessctrl_hw->gpio_nsmask[0] = 0x0F ; 
+  accessctrl_hw->pads_bank0 = ACCESSCTRL_PASSWORD_BITS | 0xFF; // PADS_BANK0 accessible by everybody
+  accessctrl_hw->io_bank[0]= ACCESSCTRL_PASSWORD_BITS | 0xFF; // PADS_BANK0 accessible by everybody
+  // accessctrl_hw->usb = ACCESSCTRL_PASSWORD_BITS | 0xFF; // XIP_CTRL accessible by everybody  
+} 
+
 
 /* Secure main() */
 int main(void) {
 
   stdio_init_all();
-  config_uart_std_to_be_accessible_by_ns();
+  config_peripherals_be_accessible_by_ns();
   printf("Hello from secure world\n");
+
+  // sleep_ms(1000);
 
   sc_trustzone_init();
 

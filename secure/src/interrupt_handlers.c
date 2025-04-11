@@ -2,37 +2,42 @@
 #include "_rp2350.h"
 
 
-void hard_fault_handler_c(uint32_t* stack)
-{
-    uint32_t r0  = stack[0];
-    uint32_t r1  = stack[1];
-    uint32_t r2  = stack[2];
-    uint32_t r3  = stack[3];
-    uint32_t r12 = stack[4];
-    uint32_t lr  = stack[5];
-    uint32_t pc  = stack[6];  // <- Where the fault occurred
-    uint32_t psr = stack[7];
+// void hard_fault_handler_c(uint32_t* stack)
+// {
+//     uint32_t r0  = stack[0];
+//     uint32_t r1  = stack[1];
+//     uint32_t r2  = stack[2];
+//     uint32_t r3  = stack[3];
+//     uint32_t r12 = stack[4];
+//     uint32_t lr  = stack[5];
+//     uint32_t pc  = stack[6];  // <- Where the fault occurred
+//     uint32_t psr = stack[7];
 
-    volatile uint32_t _CFSR  = SCB->CFSR;   // Configurable Fault Status Register
-    volatile uint32_t _HFSR  = SCB->HFSR;   // HardFault Status Register
-    volatile uint32_t _MMAR  = SCB->MMFAR;  // MemManage Fault Address
-    volatile uint32_t _BFAR  = SCB->BFAR;   // BusFault Address
-    volatile uint32_t _SHCSR = SCB->SHCSR;
+//     volatile uint32_t _CFSR  = SCB->CFSR;   // Configurable Fault Status Register
+//     volatile uint32_t _HFSR  = SCB->HFSR;   // HardFault Status Register
+//     volatile uint32_t _MMAR  = SCB->MMFAR;  // MemManage Fault Address
+//     volatile uint32_t _BFAR  = SCB->BFAR;   // BusFault Address
+//     volatile uint32_t _SHCSR = SCB->SHCSR;
 
-    // You can place a breakpoint here
-    while (1);  // halt for inspection
-}
+//     // You can place a breakpoint here
+//     while (1);  // halt for inspection
+// }
 
 
 __attribute__((naked)) void HardFault_Handler(void)
 {
-    __asm volatile (
-        "tst lr, #4          \n"  // Check EXC_RETURN
-        "ite eq              \n"
-        "mrseq r0, msp       \n"  // If equal, use MSP
-        "mrsne r0, psp       \n"  // Else use PSP
-        "b hard_fault_handler_c \n"
-    );
+    // __asm volatile (
+    //     "tst lr, #4          \n"  // Check EXC_RETURN
+    //     "ite eq              \n"
+    //     "mrseq r0, msp       \n"  // If equal, use MSP
+    //     "mrsne r0, psp       \n"  // Else use PSP
+    //     "b hard_fault_handler_c \n"
+    // );
+    while (1)
+    {
+        /* code */
+    }
+    
 }
 
 // void HardFault_Handler(void) {
@@ -54,13 +59,13 @@ void BusFault_Handler(void) {
 }
 
 void UsageFault_Handler(void) {
-    __asm volatile (
-        "tst lr, #4          \n"  // Check EXC_RETURN
-        "ite eq              \n"
-        "mrseq r0, msp       \n"  // If equal, use MSP
-        "mrsne r0, psp       \n"  // Else use PSP
-        "b hard_fault_handler_c \n"
-    );
+    // __asm volatile (
+    //     "tst lr, #4          \n"  // Check EXC_RETURN
+    //     "ite eq              \n"
+    //     "mrseq r0, msp       \n"  // If equal, use MSP
+    //     "mrsne r0, psp       \n"  // Else use PSP
+    //     "b hard_fault_handler_c \n"
+    // );
     // Handle Usage Fault exception
     // This is a placeholder function. Actual implementation will depend on the specific requirements.
     while(1){}
