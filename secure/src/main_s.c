@@ -32,6 +32,8 @@
 #include "secure_config.h"
 
 
+#include "hardware/clocks.h"
+
 /* TZ_START_NS: Start address of non-secure application */
 #ifndef TZ_START_NS
 #define TZ_START_NS (0x10100000)
@@ -53,8 +55,16 @@ void config_peripherals_be_accessible_by_ns(){
 } 
 
 
+
+void init_systimers(){
+  set_sys_clock_khz(SYSCLOCK_FREQ, true); // Set system clock to 120MHz
+}
+
 /* Secure main() */
 int main(void) {
+
+
+
 
   stdio_init_all();
   config_peripherals_be_accessible_by_ns();
