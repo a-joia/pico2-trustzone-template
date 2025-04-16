@@ -57,7 +57,7 @@ void config_peripherals_be_accessible_by_ns(){
 
 
 void init_systimers(){
-  set_sys_clock_khz(SYSCLOCK_FREQ, true); // Set system clock to 120MHz
+  // set_sys_clock_khz(SYSCLOCK_FREQ, true); // Set system clock to 120MHz
 }
 
 /* Secure main() */

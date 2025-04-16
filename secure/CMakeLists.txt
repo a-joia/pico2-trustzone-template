@@ -70,6 +70,10 @@ add_subdirectory(${ROOT_PATH_PR_COMMON}/rp2_common/pico_standard_binary_info ${C
 add_subdirectory(${ROOT_PATH_PR_COMMON}/rp2_common/pico_standard_link ${CMAKE_BINARY_DIR}/secure/drivers/rp2_common/pico_standard_link)
 add_subdirectory(${CMAKE_SOURCE_DIR}/drivers/common/pico_base_headers ${CMAKE_BINARY_DIR}/secure/drivers/common/pico_base_headers)
 
+
+# add FreeRTOS
+add_subdirectory(${CMAKE_SOURCE_DIR}/middleware/FreeRTOS ${CMAKE_BINARY_DIR}/secure/middleware/FreeRTOS)
+
 # Gather all C files in the src folder
 file(GLOB SECURE_SOURCES "src/*.c")
 
@@ -87,6 +91,7 @@ target_include_directories(secure PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/../drivers
 target_link_libraries(secure PRIVATE 
     cmsis_core 
     pico_stdlib
+    armm33_freertos
     )
 
 

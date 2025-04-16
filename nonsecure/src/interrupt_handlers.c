@@ -35,21 +35,27 @@ void Default_Handler(void) {
     while(1){}
 }
 
-void SVC_Handler(void) {
-    // Handle Supervisor Call (SVC)
-    // This is a placeholder function. Actual implementation will depend on the specific requirements.
-    while(1){}
-}
-void PendSV_Handler(void) {
-    // Handle PendSV exception
-    // This is a placeholder function. Actual implementation will depend on the specific requirements.
-    while(1){}
-}
-void SysTick_Handler(void) {
-    // Handle SysTick timer interrupt
-    // This is a placeholder function. Actual implementation will depend on the specific requirements.
-    while(1){}
-}
+
+// FreeRTOS declares it 
+// void SVC_Handler(void) {
+//     // Handle Supervisor Call (SVC)
+//     // This is a placeholder function. Actual implementation will depend on the specific requirements.
+//     while(1){}
+// }
+
+// FreeRTOS declares it 
+// void PendSV_Handler(void) {
+//     // Handle PendSV exception
+//     // This is a placeholder function. Actual implementation will depend on the specific requirements.
+//     while(1){}
+// }
+
+// FreeRTOS declares it 
+// void SysTick_Handler(void) {
+//     // Handle SysTick timer interrupt
+//     // This is a placeholder function. Actual implementation will depend on the specific requirements.
+//     while(1){}
+// }
 
 void NMI_Handler(void) {
     // Handle Non-Maskable Interrupt (NMI)

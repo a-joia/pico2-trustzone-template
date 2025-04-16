@@ -59,7 +59,9 @@
         "stdio.h": "c",
         "ticks.h": "c",
         "address_mapped.h": "c",
-        "systick.h": "c"
+        "systick.h": "c",
+        "cmsis_os.h": "c",
+        "stdint.h": "c"
     },
     "cortex-debug.variableUseNaturalFormat": false
 }
