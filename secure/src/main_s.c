@@ -30,8 +30,8 @@
 #include <stdio.h>
 #include "pico/stdlib.h"
 #include "secure_config.h"
-
-
+#include "_rp2350.h"
+#include "hardware/structs/systick.h"
 #include "hardware/clocks.h"
 
 /* TZ_START_NS: Start address of non-secure application */
@@ -51,19 +51,38 @@ void config_peripherals_be_accessible_by_ns(){
   accessctrl_hw->gpio_nsmask[0] = 0x0F ; 
   accessctrl_hw->pads_bank0 = ACCESSCTRL_PASSWORD_BITS | 0xFF; // PADS_BANK0 accessible by everybody
   accessctrl_hw->io_bank[0]= ACCESSCTRL_PASSWORD_BITS | 0xFF; // PADS_BANK0 accessible by everybody
+  // accessctrl_hw->ticks = ACCESSCTRL_PASSWORD_BITS | 0b10111001; // TICKS accessible by everybody
   // accessctrl_hw->usb = ACCESSCTRL_PASSWORD_BITS | 0xFF; // XIP_CTRL accessible by everybody  
 } 
 
 
+#define SYSCLOCK_FREQ 120000 // 120MHz
+
 
 void init_systimers(){
-  // set_sys_clock_khz(SYSCLOCK_FREQ, true); // Set system clock to 120MHz
+
+  // set clock frequency
+  set_sys_clock_khz(SYSCLOCK_FREQ, true); // Set system clock to 120MHz
+
+  // // init systimers NonSecure
+  // systick_ns_hw->csr = 0; // Disable SysTick
+  // systick_ns_hw->rvr = 0x00ffffff; // Set reload value
+  // systick_ns_hw->csr = SysTick_CTRL_CLKSOURCE_Msk | SysTick_CTRL_TICKINT_Msk | SysTick_CTRL_ENABLE_Msk; // Enable SysTick with interrupt
+
+  NVIC->ISER[0] = (1 << SysTick_IRQn); // Enable SysTick interrupt in NVIC
+  __enable_irq(); // Enable SysTick interrupt in NVIC
+
+
+  NVIC->IABR[0] = (1 << 14); // Set SysTick interrupt priority to 0
+  // // init systimers Secure
+  // systick_hw->csr = 0; // Disable SysTick
+  // systick_hw->rvr = 0x00ffffff; // Set reload value
+  // systick_hw->csr = SysTick_CTRL_CLKSOURCE_Msk | SysTick_CTRL_TICKINT_Msk | SysTick_CTRL_ENABLE_Msk; // Enable SysTick with interrupt
+  
 }
 
 /* Secure main() */
 int main(void) {
-
-
 
 
   stdio_init_all();
@@ -74,6 +93,9 @@ int main(void) {
 
   sc_trustzone_init();
 
+
+  // init_systimers();
+
   funcptr_void NonSecure_ResetHandler;
  
   /* Add user setup code for secure part here*/
@@ -83,6 +105,9 @@ int main(void) {
  
   /* Get non-secure reset handler */
   NonSecure_ResetHandler = (funcptr_void)(*( (uint32_t *)((TZ_START_NS) + 4U ) ) ) ;
+
+  // init non secure vtor
+  scb_ns_hw->vtor = TZ_START_NS;
 
   /* Start non-secure state software application */
   NonSecure_ResetHandler();

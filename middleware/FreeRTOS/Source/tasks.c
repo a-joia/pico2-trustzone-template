@@ -2026,7 +2026,7 @@ BaseType_t xReturn;
 			mtCOVERAGE_TEST_MARKER();
 		}
 	}
-	#endif /* configUSE_TIMERS */
+		#endif /* configUSE_TIMERS */
 
 	if( xReturn == pdPASS )
 	{

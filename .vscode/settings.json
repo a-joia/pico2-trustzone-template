@@ -61,7 +61,8 @@
         "address_mapped.h": "c",
         "systick.h": "c",
         "cmsis_os.h": "c",
-        "stdint.h": "c"
+        "stdint.h": "c",
+        "filesystem": "c"
     },
     "cortex-debug.variableUseNaturalFormat": false
 }

@@ -37,16 +37,15 @@ void configure_sau(void)
     SAU->CTRL = SAU_CTRL_ENABLE_Msk;
 }
 
-
-
-
 void system_init(void){
     /* Init float registers */  
-    SCB->CPACR |= (0xF << 20);  // Enable CP10 and CP11 full access
+    SCB->CPACR |= (0xF << 20);        // Enable CP10 and CP11 full access
+    SCB->NSACR |= (0x3 << 10);        // Enable CP10 and CP11 full access in non-secure state
+    scb_ns_hw->cpacr |= (0xF << 20);  // Enable CP10 and CP11 full access in non-secure state
+
     __DSB();
     __ISB();
-  
-  
+    
     /* Enable fault handlers */
     SCB->SHCSR |= SCB_SHCSR_USGFAULTENA_Msk
              |  SCB_SHCSR_BUSFAULTENA_Msk

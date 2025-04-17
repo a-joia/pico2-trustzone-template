@@ -31,7 +31,7 @@
                 "set style enabled off"
             ],
             "openOCDLaunchCommands": [
-                "adapter speed 5000"
+                "adapter speed 1000"
             ]
         },
         {
