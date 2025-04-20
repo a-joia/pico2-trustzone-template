@@ -3,29 +3,30 @@
     "configurations": [
         {
             "name": "Pico Debug (Cortex-Debug)",
-            "cwd": "c:/Users/nneto/.pico-sdk/openocd/0.12.0+dev/scripts",
+            "cwd": "${workspaceRoot}/tools/openocd/openocd/0.12.0+dev/scripts",
             "executable": "${workspaceRoot}/build_secure/secure/secure.elf",
             "request": "launch",
             "type": "cortex-debug",
             "servertype": "openocd",
             // "serverpath": "${userHome}/.pico-sdk/openocd/0.12.0+dev/openocd.exe",
-            "serverpath": "c:/Users/nneto/.pico-sdk/openocd/0.12.0+dev/openocd.exe",
-            "gdbPath": "arm-none-eabi-gdb",
+            "serverpath": "${workspaceRoot}/tools/openocd/openocd/0.12.0+dev/openocd",
+            "gdbPath": "gdb-multiarch",
             "device": "RP2350",
             "configFiles": [
                 "interface/cmsis-dap.cfg",
                 "target/rp2350.cfg"
             ],
-            "svdFile": "d:/Workspace/git/pico2-trustzone-template//drivers/rp2350/hardware_regs/RP2350.svd",
+            "svdFile": "${workspaceRoot}/drivers/rp2350/hardware_regs/RP2350.svd",
             "runToEntryPoint": "main",
             // Fix for no_flash binaries, where monitor reset halt doesn't do what is expected
             // Also works fine for flash binaries
             "showDevDebugOutput": "raw",
             "overrideLaunchCommands": [
                 "monitor reset init",
-                "load \"d:/Workspace/git/pico2-trustzone-template//build_secure/secure/secure.elf\"",
-                "load \"d:/Workspace/git/pico2-trustzone-template/build_nonsecure/nonsecure/nonsecure.elf\"",
-                "add-symbol-file \"d:/Workspace/git/pico2-trustzone-template/build_nonsecure/nonsecure/nonsecure.elf\" 0x10100000",
+                "cmsis_dap_serial E6632891E31A4B31",
+                "load \"${workspaceRoot}/build_secure/secure/secure.elf\"",
+                "load \"${workspaceRoot}/build_nonsecure/nonsecure/nonsecure.elf\"",
+                "add-symbol-file \"${workspaceRoot}/build_nonsecure/nonsecure/nonsecure.elf\" 0x10100000",
                 "set disassemble-next-line on",
                 "set print asm-demangle on",
                 "set print pretty on",
@@ -42,7 +43,7 @@
             "request": "launch",
             "type": "cortex-debug",
             "servertype": "external",
-            "gdbTarget": "host.docker.internal:50000",
+            "gdbTarget": "localhost:50000",
             "gdbPath": "gdb-multiarch",
             "device": "RP2350",
             "svdFile": "${workspaceRoot}/drivers/rp2350/hardware_regs/RP2350.svd",
@@ -53,13 +54,10 @@
                 "monitor reset init",
                 "load \"${workspaceRoot}/build_secure/secure/secure.elf\"",
                 "load \"${workspaceRoot}/build_nonsecure/nonsecure/nonsecure.elf\"",
-                "add-symbol-file \"${workspaceRoot}/build_nonsecure/nonsecure/nonsecure.elf\" 0x10100000",
-                "set disassemble-next-line on",
-                "set print asm-demangle on",
-                "set print pretty on",
-                "set style enabled off"
+                "add-symbol-file \"${workspaceRoot}/build_nonsecure/nonsecure/nonsecure.elf\" 0x10100000"
             ]
         },
+
         {
             "name": "Pico Debug (C++ Debugger)",
             "type": "cppdbg",
@@ -85,4 +83,3 @@
 
 
 
-D:\Workspace\git\pico2-trustzone-template\build_secure\secure\secure.elf

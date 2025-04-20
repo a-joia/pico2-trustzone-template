@@ -12,10 +12,8 @@
 #define NSC_NORETURN_WEAK_CALL __attribute__((noreturn, weak, cmse_nonsecure_call))
 #define NSC_NORETURN_WEAK_CALL __attribute__((noreturn, weak, cmse_nonsecure_call))     
 
-
-
 NSC_ENTRY void Secure_Test_Call(void){
-    printf("Hello from NSC secure world\n");
+    // printf("Hello from NSC secure world\n");
     // sleep_ms(10);
     return;
 }

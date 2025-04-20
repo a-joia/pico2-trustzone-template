@@ -58,7 +58,6 @@ add_subdirectory(${ROOT_PATH_PR_COMMON}/rp2_common/pico_mem_ops ${CMAKE_BINARY_D
 add_subdirectory(${ROOT_PATH_PR_COMMON}/rp2_common/pico_rand ${CMAKE_BINARY_DIR}/nonsecure/drivers/rp2_common/pico_rand)
 add_subdirectory(${ROOT_PATH_PR_COMMON}/rp2_common/pico_stdio_uart ${CMAKE_BINARY_DIR}/nonsecure/drivers/rp2_common/pico_stdio_uart)  # USING UART FOR PRINTF
 add_subdirectory(${ROOT_PATH_PR_COMMON}/rp2_common/pico_stdio ${CMAKE_BINARY_DIR}/nonsecure/drivers/rp2_common/pico_stdio)
-
 add_subdirectory(${ROOT_PATH_PR_COMMON}/common/pico_stdlib_headers ${CMAKE_BINARY_DIR}/nonsecure/drivers/common/pico_stdlib_headers)
 add_subdirectory(${ROOT_PATH_PR_COMMON}/rp2_common/pico_stdlib ${CMAKE_BINARY_DIR}/nonsecure/drivers/rp2_common/pico_stdlib)
 add_subdirectory(${CMAKE_SOURCE_DIR}/drivers/rp2_common/hardware_base ${CMAKE_BINARY_DIR}/nonsecure/drivers/rp2_common/hardware_base)
@@ -66,6 +65,11 @@ add_subdirectory(${ROOT_PATH_PR_COMMON}/rp2_common/pico_cxx_options ${CMAKE_BINA
 add_subdirectory(${ROOT_PATH_PR_COMMON}/rp2_common/pico_standard_binary_info ${CMAKE_BINARY_DIR}/nonsecure/drivers/rp2_common/pico_standard_binary_info)
 add_subdirectory(${ROOT_PATH_PR_COMMON}/rp2_common/pico_standard_link ${CMAKE_BINARY_DIR}/nonsecure/drivers/rp2_common/pico_standard_link)
 add_subdirectory(${CMAKE_SOURCE_DIR}/drivers/common/pico_base_headers ${CMAKE_BINARY_DIR}/nonsecure/drivers/common/pico_base_headers)
+
+
+
+# add FreeRTOS
+add_subdirectory(${CMAKE_SOURCE_DIR}/middleware/FreeRTOS ${CMAKE_BINARY_DIR}/nonsecure/middleware/FreeRTOS)
 
 # Gather all C files in the src folder
 file(GLOB SECURE_SOURCES "src/*.c")
@@ -81,12 +85,17 @@ target_include_directories(nonsecure PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/../nsc)
 target_include_directories(nonsecure PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/../pico-sdk/include)
 target_include_directories(nonsecure PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/../drivers/rp2_common/hardware_sync/include)
 target_include_directories(nonsecure PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/../drivers/rp2_common/hardware_sync_spin_lock/include)
+target_include_directories(nonsecure PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/../middleware/FreeRTOS/Source/CMSIS_RTOS_V2)
+target_include_directories(nonsecure PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/../middleware/FreeRTOS/Source/include)
+target_include_directories(nonsecure PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/../middleware/FreeRTOS/Source/portable/GCC/ARM_CM33/non_secure)
+
 
 
 #include lbrary cmsis_core
 target_link_libraries(nonsecure PRIVATE 
     cmsis_core 
     pico_stdlib
+    armm33_freertos
     )
 
 

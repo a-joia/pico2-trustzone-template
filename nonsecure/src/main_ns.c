@@ -6,51 +6,105 @@
 #include "hardware/structs/ticks.h"
 #include "hardware/clocks.h"
 #include "hardware/ticks.h"
+#include "secure_context.h"
 
 #include "_rp2350.h"
 
-#define SYSCLOCK_FREQ 120000 // 120MHz
+#include "cmsis_os2.h"
+#include "cmsis_os.h"
 
+#include "secure_init.h"
 
+void StartDefaultLauncher(void *argument);
+void StartDefaultTask2(void *argument);
+void StartDefaultTask3(void *argument);
 
-int64_t alarm_callback(alarm_id_t id,  void *user_data){
-        printf("Alarm callback triggered\n");
-        // Do something here
-        return 0;
+/* Definitions for defaultTask */
+osThreadId_t defaultTaskHandle;
+osThreadId_t defaultTaskHandle2;
+osThreadId_t defaultTaskHandle3;
+
+const osThreadAttr_t defaultTask_attributes = {
+        .name = "defaultTask",
+        .priority = (osPriority_t) osPriorityNormal,
+        .stack_size = 128 * 4
+        };
+
+const osThreadAttr_t defaultTask2_attributes = {
+        .name = "defaultTask2",
+        .priority = (osPriority_t) osPriorityNormal,
+        .stack_size = 128 * 4
+        };
+
+const osThreadAttr_t defaultTask3_attributes = {
+        .name = "defaultTask3",
+        .priority = (osPriority_t) osPriorityNormal,
+        .stack_size = 128 * 4
+        };
+                
+void init_systick(uint32_t uwTickFreq){
+        // Disable SysTick
+        systick_hw->csr = 0; 
+        systick_hw->rvr = 100000 - 1; // Set reload value
+
+        // Set the SysTick frequency
+        SysTick_Config(SystemCoreClock / (1000U / (uint32_t)uwTickFreq)) ; // Set SysTick to 1ms
+        
+        // Enable SysTick interrupt
+        NVIC_EnableIRQ(SysTick_IRQn); // 
+        
+        // Set SysTick interrupt priorityx
+        NVIC_SetPriority(SysTick_IRQn, 0); //
+        
+        // enable systick 
+        systick_hw->csr = 0x10007;
+        
+        // enable einterrupts
+        __enable_irq(); 
 }
 
-void sleep(uint32_t ms) {
-        add_alarm_in_ms(ms, alarm_callback, NULL, false);
-        __WFE();
-}
-
-
-
-
-
-void init_systick(uint32_t freq){
-
-        set_sys_clock_khz(SYSCLOCK_FREQ, true); // Set system clock to 120MHz
-
-
-        systick_ns_hw->csr = 0; // Disable SysTick
-        systick_ns_hw->rvr = period; // Set reload value
-        systick_ns_hw->csr = SysTick_CTRL_CLKSOURCE_Msk | SysTick_CTRL_TICKINT_Msk | SysTick_CTRL_ENABLE_Msk; // Enable SysTick with interrupt
-
-
-
-}
-
-int main(){
+int main(void){
+        // Init pritf stuff
         stdio_init_all();
-        init_systick(1); // Set SysTick to `1khz
 
+        // Initialize FreeRTOS kernel
+        osKernelInitialize();
+        
+        // Create static tasks
+        defaultTaskHandle  = osThreadNew(StartDefaultLauncher , NULL, &defaultTask_attributes);
+        
+        // Initialize the systick
+        init_systick(1000); // Set SysTick to `1khz
+        
+        // Start the FreeRTOS kernel
+        osKernelStart();
 
-        while(1){
-                Secure_Test_Call();
-           
-                // sleep_ms(10);
-           
-                printf("Hello from non-secure world\n");
+        while (1){}
+}
+
+void StartDefaultTask2(void *argument){
+        /* Infinite loop */
+           while(1){
+                // Secure_Test_Call();
+                // printf("Hello from non-secure world, task 2\n");
         }
+}
+
+void StartDefaultTask3(void *argument){
+        /* Infinite loop */
+           while(1){
+                // Secure_Test_Call();
+                // printf("Hello from non-secure world, task 2\n");
+        }
+}
+
+void StartDefaultLauncher(void *argument){
+        defaultTaskHandle2 = osThreadNew(StartDefaultTask2, NULL, &defaultTask2_attributes);
+        defaultTaskHandle3 = osThreadNew(StartDefaultTask3, NULL, &defaultTask3_attributes);
+
+        /* End initial task */
+        osThreadExit();
+
+        /* Infinite loop */
+        while(1){} // should never reach here
 }
