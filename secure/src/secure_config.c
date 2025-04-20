@@ -54,7 +54,7 @@ void system_init(void){
   
   
     SCB->AIRCR = (0x5FA << SCB_AIRCR_VECTKEY_Pos) | SCB_AIRCR_BFHFNMINS_Msk;
-  
+
   }
 
 void sc_trustzone_init(void) {

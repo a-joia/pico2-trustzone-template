@@ -42,7 +42,7 @@
             "request": "launch",
             "type": "cortex-debug",
             "servertype": "external",
-            "gdbTarget": "host.docker.internal:50000",
+            "gdbTarget": "localhost:3333",
             "gdbPath": "gdb-multiarch",
             "device": "RP2350",
             "svdFile": "${workspaceRoot}/drivers/rp2350/hardware_regs/RP2350.svd",
@@ -53,11 +53,7 @@
                 "monitor reset init",
                 "load \"${workspaceRoot}/build_secure/secure/secure.elf\"",
                 "load \"${workspaceRoot}/build_nonsecure/nonsecure/nonsecure.elf\"",
-                "add-symbol-file \"${workspaceRoot}/build_nonsecure/nonsecure/nonsecure.elf\" 0x10100000",
-                "set disassemble-next-line on",
-                "set print asm-demangle on",
-                "set print pretty on",
-                "set style enabled off"
+                "add-symbol-file \"${workspaceRoot}/build_nonsecure/nonsecure/nonsecure.elf\" 0x10100000"
             ]
         },
         {
