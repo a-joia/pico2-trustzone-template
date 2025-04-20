@@ -7,12 +7,9 @@
 #include "hardware/clocks.h"
 #include "hardware/ticks.h"
 #include "secure_context.h"
-
 #include "_rp2350.h"
-
 #include "cmsis_os2.h"
 #include "cmsis_os.h"
-
 #include "secure_init.h"
 
 void StartDefaultLauncher(void *argument);

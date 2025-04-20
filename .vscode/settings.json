@@ -62,7 +62,8 @@
         "systick.h": "c",
         "cmsis_os.h": "c",
         "stdint.h": "c",
-        "filesystem": "c"
+        "filesystem": "c",
+        "secure_init.h": "c"
     },
     "cortex-debug.variableUseNaturalFormat": false
 }
