@@ -81,6 +81,10 @@ void init_systimers(){
 /* Secure main() */
 int main(void) {
 
+  uint32_t psp_stack [100]; // temporary // todo
+  // set psp
+  __set_PSP((uint32_t)psp_stack); // Set PSP to the top of the stack
+
   funcptr_void NonSecure_ResetHandler;
   
   /* Get the core ID */
@@ -88,7 +92,10 @@ int main(void) {
 
   /* Check if the core ID is 0 or 1 */
   if (core_id == 1) {
-    while(1) __WFI(); // Sleep core 1
+    while(1) {
+      __DSB();
+      __WFI(); // Sleep core 1
+    }
   }
 
   /* Initialize the system */

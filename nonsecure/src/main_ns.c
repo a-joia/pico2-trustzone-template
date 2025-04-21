@@ -82,7 +82,7 @@ int main(void){
 void StartDefaultTask2(void *argument){
         /* Infinite loop */
            while(1){
-                // Secure_Test_Call();
+                Secure_Test_Call();
                 // printf("Hello from non-secure world, task 2\n");
         }
 }

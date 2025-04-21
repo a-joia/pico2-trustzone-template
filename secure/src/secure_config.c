@@ -35,26 +35,28 @@ void configure_sau(void)
 
     // Enable SAU
     SAU->CTRL = SAU_CTRL_ENABLE_Msk;
+
+    __DSB(); 
+    __ISB();
 }
 
 void system_init(void){
+
     /* Init float registers */  
     SCB->CPACR |= (0xF << 20);        // Enable CP10 and CP11 full access
     SCB->NSACR |= (0x3 << 10);        // Enable CP10 and CP11 full access in non-secure state
     scb_ns_hw->cpacr |= (0xF << 20);  // Enable CP10 and CP11 full access in non-secure state
-
-    __DSB();
-    __ISB();
-    
+  
     /* Enable fault handlers */
     SCB->SHCSR |= SCB_SHCSR_USGFAULTENA_Msk
              |  SCB_SHCSR_BUSFAULTENA_Msk
              |  SCB_SHCSR_MEMFAULTENA_Msk
              |  SCB_SHCSR_SECUREFAULTENA_Msk;
   
-  
     SCB->AIRCR = (0x5FA << SCB_AIRCR_VECTKEY_Pos) | SCB_AIRCR_BFHFNMINS_Msk;
 
+    __DSB(); 
+    __ISB();
   }
 
 void sc_trustzone_init(void) {
