@@ -49,6 +49,7 @@ set(PICO_PLATFORM_CMAKE_FILE "${CMAKE_SOURCE_DIR}/toolchain/rp2350.cmake" )
 
 set(ROOT_PATH_PR_COMMON "${CMAKE_SOURCE_DIR}/drivers" CACHE STRING "")
 
+
 add_subdirectory(${CMAKE_SOURCE_DIR}/tools)
 # include("cmake/rp2_common.cmake")
 
@@ -56,6 +57,7 @@ add_subdirectory(${CMAKE_SOURCE_DIR}/tools)
 option(PICO_NO_FLASH "Default binaries to not not use flash")
 # PICO_CMAKE_CONFIG: PICO_COPY_TO_RAM, Option to default all binaries to copy code from flash to SRAM before running, type=bool, default=0, group=build, docref=cmake-binary-type-config
 option(PICO_COPY_TO_RAM "Default binaries to copy code to RAM when booting from flash")
+
 
 
 add_subdirectory(${ROOT_PATH_PR_COMMON}/rp2_common/pico_fix)

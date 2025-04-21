@@ -56,7 +56,14 @@
         "secure_config.h": "c",
         "pico2.h": "c",
         "nsc.h": "c",
-        "stdio.h": "c"
+        "stdio.h": "c",
+        "ticks.h": "c",
+        "address_mapped.h": "c",
+        "systick.h": "c",
+        "cmsis_os.h": "c",
+        "stdint.h": "c",
+        "filesystem": "c",
+        "secure_init.h": "c"
     },
     "cortex-debug.variableUseNaturalFormat": false
 }

@@ -1,0 +1,20 @@
+version: '3.8'
+
+services:
+  ubuntu-ssh:
+    build: .
+    image: ubuntu-image-ssh
+    container_name: ubuntu-container-ssh
+    privileged: true
+    devices:
+      - "/dev/bus/usb:/dev/bus/usb"
+      - "/dev/ttyACM0:/dev/ttyACM0"
+    volumes:
+      - "D:\\Workspace:/home/neto/Workspace"
+    stdin_open: true
+    tty: true
+    ports:
+      - "2222:22"  # Expose SSH
+      - "50000:50000"  # Expose port 50000 for the application
+      - "50001:50001"  # Expose port 50001 for the application
+      - "50002:50002"  # Expose port 50002 for the application

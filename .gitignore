@@ -7,5 +7,5 @@ build_secure/*
 build_nonsecure/*
 picotool/*
 
-
-*.log
+.vscode/launch.json
+*log
