@@ -31,16 +31,18 @@ echo "[LOG] Secure build completed."
 
 # --- Non-Secure Build ---
 echo "[LOG] Building non-secure firmware..."
+# cd nonsecure/app/
 cd build_nonsecure
-$CMAKECMD -G Ninja .. -DCMAKE_TOOLCHAIN_FILE=../toolchain/rp2350.cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DBUILD_NONSECURE=1
-$CMAKECMD --build . --verbose #| tee ../nonsecure_build.log
+# rm -rf build
+$CMAKECMD -Bbuild -GNinja -DBOARD=rpi_pico2/rp2350a/m33 ../nonsecure/app
+ninja -Cbuild
 cd ..
 echo "[LOG] Nonsecure build completed."
 
 # --- Objdump (only after both builds are done) ---
 echo "[LOG] Generating disassembly files..."
 $OBJDUMP -D build_secure/secure/secure.elf > build_secure/secure/secure.elf.dis
-$OBJDUMP -D build_nonsecure/nonsecure/nonsecure.elf > build_nonsecure/nonsecure/nonsecure.elf.dis
+# $OBJDUMP -D build_nonsecure/nonsecure/nonsecure.elf > build_nonsecure/nonsecure/nonsecure.elf.dis
 echo "[LOG] Disassembly files generated."
 
 echo "[LOG] Build process completed."
