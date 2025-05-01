@@ -23,8 +23,8 @@
             "showDevDebugOutput": "raw",
             "overrideLaunchCommands": [
                 "monitor reset init",
-                "load \"${workspaceRoot}//build_secure/secure/secure.elf\"",
                 "load \"${workspaceRoot}/build_nonsecure/build/zephyr/zephyr.elf\"",
+                "load \"${workspaceRoot}//build_secure/secure/secure.elf\"",
                 "add-symbol-file \"${workspaceRoot}/build_nonsecure/build/zephyr/zephyr.elf\" 0x10100000",
                 "set disassemble-next-line on",
                 "set print asm-demangle on",
