@@ -19,7 +19,7 @@ _region_min_align = 4;
 MEMORY
     {
     FLASH (rx) : ORIGIN = (0x10100000 + 0x100), LENGTH = (0x3fff00 - 0x0)
-    RAM (wx) : ORIGIN = 0x20000000, LENGTH = (520 * 1K)
+    RAM (wx) : ORIGIN = 0x20012000, LENGTH = (520 * 1K)
    
     IDT_LIST (wx) : ORIGIN = 0xFFFF7FFF, LENGTH = 32K
     }
@@ -289,7 +289,7 @@ ztest :
  *(.igot)
  }
    
- . = 0x20000000;
+ . = 0x20012000;
  . = ALIGN(_region_min_align);
  _image_ram_start = .;
 .ramfunc : ALIGN_WITH_INPUT
@@ -412,7 +412,7 @@ noinit (NOLOAD) :
         *(.noinit)
         *(".noinit.*")
 } > RAM AT > RAM
-    __kernel_ram_end = 0x20000000 + (520 * 1K);
+    __kernel_ram_end = 0x20012000 + (520 * 1K);
     __kernel_ram_size = __kernel_ram_end - __kernel_ram_start;
     .last_ram_section (NOLOAD) :
     {

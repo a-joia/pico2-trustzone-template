@@ -43,16 +43,75 @@
 /* typedef for non-secure callback functions */
 typedef void (*funcptr_void) (void) __attribute__((cmse_nonsecure_call));
 
+
+#include "hardware/gpio.h" // PICO_USE_GPIO_COPROCESSOR is defined here
+#include "hardware/structs/m33.h"
+// ----------------------------------------------------
+// 00200 PICO_RUNTIME_INIT_PER_CORE_ENABLE_COPROCESSORS
+// ----------------------------------------------------
+void __weak runtime_init_per_core_enable_coprocessors(void) {
+    // VFP copro (float)
+    uint32_t cpacr = M33_CPACR_CP10_BITS;
+    cpacr |= M33_CPACR_CP4_BITS;
+#if PICO_USE_GPIO_COPROCESSOR
+    cpacr |= M33_CPACR_CP0_BITS;
+#endif
+    arm_cpu_hw->cpacr |= cpacr;
+    asm volatile ("mrc p4,#0,r0,c0,c0,#1" : : : "r0"); // clear engaged flag via RCMP   
+}
+
+
+
+void config_coprocessors_be_accessible_by_ns(){
+  SCB->NSACR |= 0xFFFFFFFF; // set coprocessors to be accessible by non-secure
+  scb_ns_hw->cpacr |= 0b1100001100000011; // set coprocessors to be accessible by non-secure non privileged
+  return;
+}
+
+
 void config_peripherals_be_accessible_by_ns(){
   accessctrl_hw->uart[0] = ACCESSCTRL_PASSWORD_BITS | 0xFF; 
   accessctrl_hw->uart[1] = ACCESSCTRL_PASSWORD_BITS | 0xFF; 
   accessctrl_hw->timer[0] = ACCESSCTRL_PASSWORD_BITS | 0xFF;
   accessctrl_hw->timer[1] = ACCESSCTRL_PASSWORD_BITS | 0xFF; 
   accessctrl_hw->clocks = ACCESSCTRL_PASSWORD_BITS | 0xFF;
-  accessctrl_hw->gpio_nsmask[0] = 0x0F ; 
+  accessctrl_hw->gpio_nsmask[0] = 0xFFFFFFFF ;
+  accessctrl_hw->gpio_nsmask[1] = 0xFFFFFFFF ;
   accessctrl_hw->pads_bank0 = ACCESSCTRL_PASSWORD_BITS | 0xFF; // PADS_BANK0 accessible by everybody
   accessctrl_hw->io_bank[0] = ACCESSCTRL_PASSWORD_BITS | 0xFF; // PADS_BANK0 accessible by everybody
+  accessctrl_hw->io_bank[1] = ACCESSCTRL_PASSWORD_BITS | 0xFF; // IO_BANK accessible by everybody
   accessctrl_hw->ticks = ACCESSCTRL_PASSWORD_BITS | 0xFF; // TICKS accessible by everybody
+  accessctrl_hw->rosc = ACCESSCTRL_PASSWORD_BITS | 0xFF; // ROSC accessible by everybody
+  accessctrl_hw->pll_sys = ACCESSCTRL_PASSWORD_BITS | 0xFF; // PLL_SYS accessible by everybody
+  accessctrl_hw->pll_usb = ACCESSCTRL_PASSWORD_BITS | 0xFF; // PLL_USB accessible by everybody
+  accessctrl_hw->resets = ACCESSCTRL_PASSWORD_BITS | 0xFF; // RESETS accessible by everybody
+  accessctrl_hw->watchdog = ACCESSCTRL_PASSWORD_BITS | 0xFF; // WATCHDOG accessible by everybody
+  accessctrl_hw->pads_qspi = ACCESSCTRL_PASSWORD_BITS | 0xFF; // PADS_QSPI accessible by everybody
+  accessctrl_hw->adc0 = ACCESSCTRL_PASSWORD_BITS | 0xFF; // ADC0 accessible by everybody
+  accessctrl_hw->i2c[0] = ACCESSCTRL_PASSWORD_BITS | 0xFF; // I2C0 accessible by everybody
+  accessctrl_hw->i2c[1] = ACCESSCTRL_PASSWORD_BITS | 0xFF; // I2C1 accessible by everybody
+  accessctrl_hw->spi[0] = ACCESSCTRL_PASSWORD_BITS | 0xFF; // SPI0 accessible by everybody
+  accessctrl_hw->spi[1] = ACCESSCTRL_PASSWORD_BITS | 0xFF; // SPI1 accessible by everybody
+  accessctrl_hw->usbctrl = ACCESSCTRL_PASSWORD_BITS | 0xFF; // USBCTRL accessible by everybody
+  accessctrl_hw->xip_ctrl = ACCESSCTRL_PASSWORD_BITS | 0xFF; // XIP_CTRL accessible by everybody
+  accessctrl_hw->syscfg = ACCESSCTRL_PASSWORD_BITS | 0xFF; // SYSCFG accessible by everybody
+  accessctrl_hw->xosc = ACCESSCTRL_PASSWORD_BITS | 0xFF; // XOSC accessible by everybody
+  accessctrl_hw->pio[0] = ACCESSCTRL_PASSWORD_BITS | 0xFF; // PIO0 accessible by everybody
+  accessctrl_hw->pio[1] = ACCESSCTRL_PASSWORD_BITS | 0xFF; // PIO1 accessible by everybody
+  accessctrl_hw->pio[2] = ACCESSCTRL_PASSWORD_BITS | 0xFF; // PIO1 accessible by everybody
+  accessctrl_hw->pwm = ACCESSCTRL_PASSWORD_BITS | 0xFF; // PWM accessible by everybody
+  accessctrl_hw->dma =  ACCESSCTRL_PASSWORD_BITS | 0xFF;
+  accessctrl_hw->otp = ACCESSCTRL_PASSWORD_BITS | 0xFF; // OTP accessible by everybody
+  accessctrl_hw->xip_aux = ACCESSCTRL_PASSWORD_BITS | 0xFF; // XIP_AUX accessible by everybody
+  accessctrl_hw->xip_qmi = ACCESSCTRL_PASSWORD_BITS | 0xFF; // USBCTRL_DRP accessible by everybody
+  accessctrl_hw->rsm = ACCESSCTRL_PASSWORD_BITS | 0xFF; // RSM accessible by everybody
+  accessctrl_hw->powman = ACCESSCTRL_PASSWORD_BITS | 0xFF; // POWMAN accessible by everybody
+  accessctrl_hw->hstx = ACCESSCTRL_PASSWORD_BITS | 0xFF; // HSTX accessible by everybody
+  accessctrl_hw->busctrl = ACCESSCTRL_PASSWORD_BITS | 0xFF; // BUSCTRL accessible by everybody
+  accessctrl_hw->coresight_periph = ACCESSCTRL_PASSWORD_BITS | 0xFF; // CORESIGHT_PERIPH accessible by everybody
+  accessctrl_hw->coresight_trace = ACCESSCTRL_PASSWORD_BITS | 0xFF; // CORESIGHT_TRACE accessible
+  accessctrl_hw->sysinfo = ACCESSCTRL_PASSWORD_BITS | 0xFF; // SYSINFO accessible by everybody
+  // accessctrl_hw->cfgreset = ACCESSCTRL_PASSWORD_BITS | 0xFF; // CFGRESET accessible by everybody
   // accessctrl_hw->usb = ACCESSCTRL_PASSWORD_BITS | 0xFF; // XIP_CTRL accessible by everybody  
 } 
 
@@ -61,6 +120,10 @@ void config_peripherals_be_accessible_by_ns(){
 void init_systimers(){
   // set clock frequency
   set_sys_clock_khz(SYSCLOCK_FREQ, true); // Set system clock to 120MHz
+
+
+  // init coprocessor
+  runtime_init_per_core_enable_coprocessors();
 
   // activate the systick
   nvic_hw->iser[0] = (1 << (SYSTICK_INTERRUPT_ID)); // Enable SysTick interrupt in NVIC
@@ -96,7 +159,7 @@ int main(void) {
 
   // Set up the peripheral access control
   config_peripherals_be_accessible_by_ns();
-  
+  config_coprocessors_be_accessible_by_ns();
   // init_systimers()
   sc_trustzone_init();
 

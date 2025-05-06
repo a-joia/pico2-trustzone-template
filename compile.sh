@@ -43,6 +43,9 @@ echo "[LOG] Nonsecure build completed."
 echo "[LOG] Generating disassembly files..."
 $OBJDUMP -D build_secure/secure/secure.elf > build_secure/secure/secure.elf.dis
 # $OBJDUMP -D build_nonsecure/nonsecure/nonsecure.elf > build_nonsecure/nonsecure/nonsecure.elf.dis
+$OBJDUMP -D build_nonsecure/build/zephyr/zephyr.elf > build_nonsecure/build/zephyr/zephyr.elf.dis
+
 echo "[LOG] Disassembly files generated."
+
 
 echo "[LOG] Build process completed."

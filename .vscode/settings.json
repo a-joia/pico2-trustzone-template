@@ -63,7 +63,13 @@
         "cmsis_os.h": "c",
         "stdint.h": "c",
         "filesystem": "c",
-        "secure_init.h": "c"
+        "secure_init.h": "c",
+        "usb.h": "c",
+        "array": "c",
+        "string": "c",
+        "string_view": "c",
+        "span": "c",
+        "vector": "c"
     },
     "cortex-debug.variableUseNaturalFormat": false
 }
