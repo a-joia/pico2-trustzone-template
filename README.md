@@ -35,32 +35,66 @@ nonsecure/*
 ```
 
 
+# Config environment (ubuntu24)
+
+Necessary hardware:
+- Raspberry pico 2
+- Raspberry debug probe
+
+### Compiling the code
+
+1. Install vscode
+2. Install raspberry pi pico extension
+3. Install sdk and toolchains
+    - One easy way install everything is to create a new project from example using the pico extension, then open the project. This should automatically install the pico-sdk and the toolchain at `~/.pico-sdk`
+4. Clone this repo 
+5. run ./compile.sh 
+
+### Flashing / Debugging
+
+Configure the vscode launcher
+
+1. Configure the file `.vscode/launch.json`
+    - Change `cwd` , `serverpath`, `gdbPath` from "Pico Debug (Cortex-Debug)"  with your path
+
+Now we need to make the debug probe accessible by the user.
 
 
+Create a new group that will have access to the debug probe (this is not necessary, you can just use any group that you already have)
 
-# Binding Windows USB to docker 
-
-1- Install usbipd-win
-
+Create group:
 ```
-winget install dorssel.usbipd-win
+sudo groupadd debugprobe
 ```
 
-2- List devices
+Add user to group:
 ```
-usbipd list
+sudo usermod -aG debugprobe $USER
+``` 
+
+Test if the user is in the group
+```
+groups $USER
 ```
 
-3- Attach device to wsl
-
+### 1. Create udev rule 
 ```
-usbipd attach --wsl --busid <bus-id> --auto-attach
+sudo vim /etc/udev/rules.d/60-cmsis-dap.rules
 ```
 
-
----
-
-Run openocd on Windows
+### 2.  Add the following line
 ```
-c:/Users/nneto/.pico-sdk/openocd/0.12.0+dev/openocd.exe -c "gdb_port 50000" -c "tcl_port 50001" -c "telnet_port 50002" -s "c:/Users/nneto/.pico-sdk/openocd/0.12.0+dev/scripts" -f "c:/Users/nneto/.vscode/extensions/marus25.cortex-debug-1.12.1/support/openocd-helpers.tcl" -f interface/cmsis-dap.cfg -f target/rp2350.cfg -c "adapter speed 5000" 
+SUBSYSTEM=="usb", ATTRS{idVendor}=="2e8a", ATTRS{idProduct}=="000c", MODE="0666", GROUP="debugprobe"
 ```
+
+### 3. Reload udev rules and replug the device
+```
+sudo udevadm control --reload-rules
+sudo udevadm trigger
+```
+
+### 4.  You may need install this library or other libraries
+```
+sudo apt install libhidapi-hidraw0
+```
+### 5. Run vscode debug using the "Pico Debug (Cortex-Debug)"  launcher
