@@ -77,6 +77,8 @@ sudo udevadm trigger
 
 ### 4.  You may need install this library or other libraries
 ```
+sudo apt update
 sudo apt install libhidapi-hidraw0
+sudo apt install gcc-arm-none-eabi gdb-multiarch
 ```
 ### 5. Run vscode debug using the "Pico Debug (Cortex-Debug)"  launcher
