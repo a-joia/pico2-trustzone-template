@@ -67,15 +67,6 @@ check-environment.sh    - Environment validation script
 try_to_open_device.sh   - Device connection diagnostic
 ```
 
-### Important TrustZone Note
-
-**By default, all peripherals are configured as Secure.** To use features in non-secure world, explicitly allow them via NSC (Non-Secure Callable) functions in `secure/include/nsc.h`.
-
-Example NSC export:
-```c
-// In secure/include/nsc.h
-__attribute__((cmse_nonsecure_entry)) void secure_function(void);
-```
 
 ## Environment Setup
 
